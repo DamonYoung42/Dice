@@ -1,0 +1,6 @@
+C:\Users\usf00_000\Documents\DevCodeCamp\Projects\Dice\Dice\bin\Debug\Dice.exe.config
+C:\Users\usf00_000\Documents\DevCodeCamp\Projects\Dice\Dice\bin\Debug\Dice.exe
+C:\Users\usf00_000\Documents\DevCodeCamp\Projects\Dice\Dice\bin\Debug\Dice.pdb
+C:\Users\usf00_000\Documents\DevCodeCamp\Projects\Dice\Dice\obj\Debug\DiceGame.csprojResolveAssemblyReference.cache
+C:\Users\usf00_000\Documents\DevCodeCamp\Projects\Dice\Dice\obj\Debug\Dice.exe
+C:\Users\usf00_000\Documents\DevCodeCamp\Projects\Dice\Dice\obj\Debug\Dice.pdb

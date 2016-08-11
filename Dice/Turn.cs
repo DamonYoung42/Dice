@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace DiceGame
 {
-    class Program
+    class Turn
     {
-        static void Main(string[] args)
-        {
-            Game game = new Game();
-            Console.ReadLine();
-        }
+
+
+            //check for winning point total
+            //if (this.score >= winningPointTotal)
     }
 }

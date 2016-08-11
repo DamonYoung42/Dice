@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Dice
+namespace DiceGame
 {
     class Player
     {
@@ -15,6 +15,18 @@ namespace Dice
         {
             this.name = name;
             this.score = 0;
+        }
+
+        public void TakeTurn()
+        {
+            //roll dice
+
+            //Random diceValue = new Random();
+            //this.score += [diceValue.Next(4)];
+            
+            //update score
+            //check for 6-number sequence
+
         }
     }
 }
