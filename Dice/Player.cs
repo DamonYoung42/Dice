@@ -17,18 +17,27 @@ namespace DiceGame
             this.score = 0;
         }
 
-        public void TakeTurn(List<Dice> dice)
+        public bool TakeTurn(List<Dice> dice)
         {
             List<int> diceResult = new List<int> { };
             //roll dice
             diceResult = RollDice(dice);
 
+            if (IsSequence(diceResult))
+            {
+                Console.WriteLine("{0} rolled a six-number sequence -- {1} -- to automatically win!", this.name, this.getRolledDice(diceResult));
+
+                return false;
+            }
+
             int turnScore = diceResult.Sum(); //set player's turn score
             this.score += turnScore; //add turnscore to player's total score
+
             Console.WriteLine("{0} rolled {1} for {2} points in this round for a game score of {3}", this.name, getRolledDice(diceResult), turnScore, this.score);
-            Console.WriteLine("Hit any key for next player's turn.");
+            Console.WriteLine("Press any key for next player's turn.");
             Console.ReadKey();
-            //check for 6-number sequence
+            return true;
+
         }
 
         public List<int> RollDice(List<Dice> rolledDice)
@@ -38,7 +47,7 @@ namespace DiceGame
 
             foreach (Dice item in rolledDice)
             {
-                rollresult.Add(diceValue.Next(1, item.name + 1));   
+                rollresult.Add(diceValue.Next(1, item.name + 1));
             }
             return rollresult;
         }
@@ -47,6 +56,15 @@ namespace DiceGame
         {
             return string.Join("+", result);
         }
+
+        public bool IsSequence(List<int> rolledDice)
+        {
+            rolledDice.Sort();
+
+            var all = Enumerable.Range(rolledDice.Min(), rolledDice.Max() - rolledDice.Min() + 1);
+            return rolledDice.SequenceEqual(all);
+        }
+
 
     }
 }

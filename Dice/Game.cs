@@ -27,10 +27,6 @@ namespace DiceGame
             Setup();
         }
 
-        public void Run()
-        {
-                    }
-
         public void Setup()
         {
             IntroduceGame();
@@ -120,19 +116,22 @@ namespace DiceGame
             {
                 foreach (Player player in roster)
                 {
-                    player.TakeTurn(dice);
-                    if (player.score >= this.winningPointTotal)
+                    if (!player.TakeTurn(dice))
                     {
                         gameOver = true;
-
+                        break;
                     }
+                    else
+                    {
+                        if (player.score >= this.winningPointTotal)
+                        {
+                            gameOver = true;
+                            DetermineWinner();
+                            break;
+                        }
+                    }                                
                 }
-                
             }
-            DetermineWinner();
-
-
-
         }
 
         public void DetermineWinner()
@@ -146,7 +145,8 @@ namespace DiceGame
             }
             winner = roster.Find(item => item.score == highestScore).name;
             Console.WriteLine("{0} wins!!!", winner);
-
         }
+
+
     }
 }
