@@ -20,7 +20,7 @@ namespace DiceGame
         public bool TakeTurn(List<Dice> dice)
         {
             List<int> diceResult = new List<int> { };
-            //roll dice
+
             diceResult = RollDice(dice);
 
             if (IsSequence(diceResult))
@@ -30,12 +30,10 @@ namespace DiceGame
                 return false;
             }
 
-            int turnScore = diceResult.Sum(); //set player's turn score
-            this.score += turnScore; //add turnscore to player's total score
-
-            Console.WriteLine("{0} rolled {1} for {2} points in this round for a game score of {3}", this.name, getRolledDice(diceResult), turnScore, this.score);
-            Console.WriteLine("Press any key for next player's turn.");
-            Console.ReadKey();
+            this.score += diceResult.Sum();
+            Console.WriteLine("{0} rolled {1} for {2} points in this round for a game score of {3}", this.name, getRolledDice(diceResult), diceResult.Sum(), this.score);
+            //Console.WriteLine("Press any key to take next player's turn.");
+            //Console.ReadKey();
             return true;
 
         }
@@ -61,8 +59,8 @@ namespace DiceGame
         {
             rolledDice.Sort();
 
-            var all = Enumerable.Range(rolledDice.Min(), rolledDice.Max() - rolledDice.Min() + 1);
-            return rolledDice.SequenceEqual(all);
+            var rangeSequence = Enumerable.Range(rolledDice.Min(), rolledDice.Max() - rolledDice.Min() + 1);
+            return rolledDice.SequenceEqual(rangeSequence);
         }
 
 
