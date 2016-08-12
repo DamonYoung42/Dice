@@ -18,6 +18,7 @@ namespace DiceGame
         public Game()
         {
             roster = new List<Player> { };
+            dice = new List<Dice> { };
             gameOver = false;
             round = 0;
             numOfPlayers = 0;
@@ -98,7 +99,6 @@ namespace DiceGame
 
         public void InitializeDice()
         {
-            dice = new List<Dice> { };
             Dice fourSided = new Dice(4);
             Dice sixSided = new Dice(6);
             Dice eightSided = new Dice(8);
@@ -120,12 +120,32 @@ namespace DiceGame
             {
                 foreach (Player player in roster)
                 {
-                    player.TakeTurn();
+                    player.TakeTurn(dice);
+                    if (player.score >= this.winningPointTotal)
+                    {
+                        gameOver = true;
+
+                    }
                 }
-
-                round += 1;
+                
             }
+            DetermineWinner();
 
+
+
+        }
+
+        public void DetermineWinner()
+        {
+            int highestScore = 0;
+            string winner;
+
+            foreach (Player player in roster)
+            {
+                highestScore = Math.Max(highestScore, player.score);
+            }
+            winner = roster.Find(item => item.score == highestScore).name;
+            Console.WriteLine("{0} wins!!!", winner);
 
         }
     }
