@@ -9,6 +9,7 @@ namespace DiceGame
     class Game
     {
         public bool gameOver;
+        public bool playerRolledSequence;
         public int round;
         public int numOfPlayers;
         public int maxScore;
@@ -20,6 +21,7 @@ namespace DiceGame
             roster = new List<Player> { };
             dice = new List<Dice> { };
             gameOver = false;
+            playerRolledSequence = false;
             round = 0;
             numOfPlayers = 0;
             maxScore = 0;
@@ -64,10 +66,10 @@ namespace DiceGame
                 Console.WriteLine("Please enter a number greater than 0:");
             }
 
-            Console.WriteLine("How many points will determine the winner?");
-            while (!Int32.TryParse(Console.ReadLine(), out maxScore) || maxScore <= 50)
+            Console.WriteLine("How many points will determine the winner? (50-1,000)");
+            while (!Int32.TryParse(Console.ReadLine(), out maxScore) || (maxScore <= 49 || maxScore > 1000))
             {
-                Console.WriteLine("Please enter a number greater than 50:");
+                Console.WriteLine("Please enter a number between 50 and 1,000:");
             }
 
             for (int i = 0; i < numOfPlayers; i++)
@@ -144,31 +146,50 @@ namespace DiceGame
 
         public void PlayGame()
         {
+            List<int> turnResult;
+
             SetupGame();
 
             while (!gameOver)
             {
                 foreach (Player player in roster)
                 {
-                    if (!player.TakeTurn(dice))
+                    turnResult = player.TakeTurn(dice);
+                    Console.WriteLine("{0} rolled {1} for {2} points in this round for a game score of {3}", player.name, getRolledDice(turnResult), turnResult.Sum(), player.score);
+                    if (IsSequence(turnResult))
                     {
+                        Console.WriteLine("{0} rolled a six-number sequence -- {1} -- to automatically win!", player.name, getRolledDice(turnResult));
+                        Console.WriteLine("Thanks for playing. Goodbye.");
                         gameOver = true;
+                        playerRolledSequence = true;
                         break;
                     }
 
                     if (player.score > maxScore)
                     {
                         gameOver = true;
-                        DetermineWinner();
-                        break;
+                        //break;
                     }
-                    Console.WriteLine("Press any key to take next player's turn.");
-                    Console.ReadKey();
-                 
 
+                    if ((!gameOver) || ((gameOver) && (roster.IndexOf(player) != (roster.Count-1))))
+                    {
+                        Console.WriteLine("Press any key to take next player's turn.");
+                        Console.ReadKey();
+                    }
+
+                }
+                if (gameOver && !playerRolledSequence)
+                {
+                    DetermineWinner();
                 }
 
             }
+
+        }
+
+        public string getRolledDice(List<int> result)
+        {
+            return string.Join("+", result);
         }
 
         public void DetermineWinner()
@@ -182,10 +203,15 @@ namespace DiceGame
             }
             winner = roster.Find(item => item.score == highestScore).name;
             Console.WriteLine("{0} wins!!!", winner);
-            Console.WriteLine("Thanks for playing. Goodbye.");
-
 
         }
 
+        public bool IsSequence(List<int> rolledDice)
+        {
+            rolledDice.Sort();
+
+            var rangeSequence = Enumerable.Range(rolledDice.Min(), rolledDice.Max() - rolledDice.Min() + 1);
+            return rolledDice.SequenceEqual(rangeSequence);
+        }
     }
 }
