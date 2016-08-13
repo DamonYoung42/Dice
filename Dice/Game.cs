@@ -195,14 +195,29 @@ namespace DiceGame
         public void DetermineWinner()
         {
             int highestScore = 0;
-            string winner;
+            List<Player> winner = new List<Player> { };
+            string winnerName;
 
             foreach (Player player in roster)
             {
                 highestScore = Math.Max(highestScore, player.score);
             }
-            winner = roster.Find(item => item.score == highestScore).name;
-            Console.WriteLine("{0} wins!!!", winner);
+
+            winner = roster.FindAll(item => item.score == highestScore);
+            if (winner.Count > 1)
+            {
+                Console.WriteLine("{0} players are tied ... Press any key to continue playing:", winner.Count);
+                Console.ReadKey();
+                gameOver = false;
+                roster.RemoveAll(item => item.score != highestScore);
+            }
+            else
+            {
+                winnerName = roster.Find(item => item.score == highestScore).name;
+                Console.WriteLine("{0} wins!!!", winnerName);
+            }
+
+
 
         }
 
